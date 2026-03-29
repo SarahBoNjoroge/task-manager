@@ -1,20 +1,36 @@
 # Task Manager API
 
-A RESTful Task Management API built with Laravel and MySQL.
+A RESTful Task Management API with a Vanilla JS frontend interface, built with Laravel and MySQL.
 
 ## Live URL
-```
 https://task-manager-production-a8ae.up.railway.app
-```
+
+## Interface
+The application has a beautiful web interface where you can:
+- ➕ Create new tasks
+- 📝 View all tasks in a table
+- ▶ Update task status (pending → in_progress → done)
+- 🗑 Delete completed tasks
+- 📊 View daily task reports
 
 ## Database
 MySQL — SQL dump file included as `task_manager.sql`
+
+## Tech Stack
+| Layer | Technology |
+|-------|-----------|
+| Frontend | HTML + CSS + Vanilla JS |
+| Backend | Laravel 11 (PHP) |
+| Database | MySQL |
+| Hosting | Railway |
 
 ## Requirements
 - PHP 8.2+
 - Composer
 - MySQL
 - Laravel 11
+
+---
 
 ## How to Run Locally
 
@@ -56,18 +72,10 @@ php artisan migrate
 php artisan serve
 ```
 
-API is now running at `http://127.0.0.1:8000`
+Visit `http://127.0.0.1:8000` to see the interface! 
 
 ---
-Testing the API
 
-You can test the API using:
-- **Browser** for GET requests
-- **Postman** - download at https://www.postman.com/downloads/
-- **Thunder Client** - VS Code extension
-
-### Example using Live URL:
-GET https://task-manager-production-a8ae.up.railway.app/api/tasks
 ## API Endpoints
 
 ### 1. Create Task
@@ -82,6 +90,12 @@ Body:
     "priority": "high"
 }
 ```
+Rules:
+- Title cannot duplicate on the same due_date
+- due_date must be today or in the future
+- priority must be low, medium or high
+
+---
 
 ### 2. List Tasks
 ```
@@ -90,19 +104,32 @@ GET /api/tasks
 Optional filter by status:
 ```
 GET /api/tasks?status=pending
+GET /api/tasks?status=in_progress
+GET /api/tasks?status=done
 ```
+
+---
 
 ### 3. Update Task Status
 ```
 PATCH /api/tasks/{id}/status
 ```
-Status progresses: `pending → in_progress → done`
+Status progresses only forward:
+```
+pending → in_progress → done
+```
+Cannot skip or revert status.
+
+---
 
 ### 4. Delete Task
 ```
 DELETE /api/tasks/{id}
 ```
-Only `done` tasks can be deleted. Returns 403 if not done.
+- Only `done` tasks can be deleted
+- Returns 403 Forbidden if task is not done
+
+---
 
 ### 5. Daily Report (Bonus)
 ```
@@ -126,10 +153,23 @@ Response:
 - Task title cannot duplicate on the same due_date
 - due_date must be today or in the future
 - Status can only move forward: pending → in_progress → done
-- Only done tasks can be deleted
+- Only done tasks can be deleted (403 Forbidden otherwise)
+
+---
+
+## Testing the API
+You can test using:
+- **Browser** → visit https://task-manager-production-a8ae.up.railway.app
+- **Postman** → download at https://www.postman.com/downloads/
+- **Thunder Client** → VS Code extension
 
 ---
 
 ## Deployment
 Deployed on Railway with MySQL database.
 Live URL: https://task-manager-production-a8ae.up.railway.app
+
+---
+
+## Author
+Sarah Bonjoroge
